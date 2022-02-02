@@ -8,7 +8,7 @@ export const App = () => {
     <div className={'max-w-2xl px-5 mx-auto flex flex-col min-h-screen'}>
       <Header />
       <Board />
-      <Keyboard />
+      <Keyboard onKeyPress={(key) => console.log(key)} />
     </div>
   );
 };

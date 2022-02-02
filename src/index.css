@@ -27,3 +27,42 @@ code {
     width: 100%;
     padding-top: 100%;
 }
+
+@keyframes flipIn {
+    0% {
+        transform: rotateX(0);
+    }
+    100% {
+        transform: rotateX(-90deg);
+    }
+}
+
+@keyframes flipOut {
+    0% {
+        transform: rotateX(-90deg);
+    }
+    100% {
+        transform: rotateX(0);
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    40% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+.flip-in {
+    animation: flipIn 250ms ease-in;
+}
+.flip-out {
+    animation: flipOut 250ms ease-in;
+}
+.pop-in {
+    animation: popIn 250ms;
+}

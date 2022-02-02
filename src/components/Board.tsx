@@ -31,7 +31,7 @@ export const Board = () => {
           {Array(25)
             .fill(null)
             .map((_, idx) => (
-              <Tile key={idx} />
+              <Tile key={idx} status={'blank'} />
             ))}
         </div>
       </div>
