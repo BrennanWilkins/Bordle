@@ -2316,7 +2316,7 @@ export const SOLUTIONS = [
   'shave',
 ];
 
-export const GUESSES = [
+export const VALID_GUESSES = [
   'aahed',
   'aalii',
   'aargh',
