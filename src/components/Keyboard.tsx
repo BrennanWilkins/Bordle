@@ -1,33 +1,30 @@
-import {ReactNode} from 'react';
+import {ReactNode, useEffect, useState} from 'react';
 import {GameState, keyList, TileStatus} from '../logic/gameUtils';
 
 export const Keyboard = ({
   onKeyPress,
   gameState,
-  answer,
 }: {
   onKeyPress: (key: string) => void;
   gameState: GameState;
-  answer: string;
 }) => {
+  const getKeyStatus = (key: string) => {
+    const flatState = gameState.flat();
+    return flatState.find((x) => x.value === key && x.status === 'correct')
+      ? 'correct'
+      : flatState.find((x) => x.value === key && x.status === 'present')
+      ? 'present'
+      : flatState.find((x) => x.value === key && x.status === 'absent')
+      ? 'absent'
+      : 'blank';
+  };
+
   return (
     <div className={'pb-5 mt-10'}>
       <div className={'flex'}>
         {keyList['0'].map((key) => {
           return (
-            <KeyComponent
-              status={
-                gameState.flat().find((x) => x.value === key && x.status === 'correct')
-                  ? 'correct'
-                  : gameState.flat().find((x) => x.value === key && x.status === 'present')
-                  ? 'present'
-                  : gameState.flat().find((x) => x.value === key && x.status === 'absent')
-                  ? 'absent'
-                  : 'blank'
-              }
-              key={key}
-              onClick={() => onKeyPress(key)}
-            >
+            <KeyComponent status={getKeyStatus(key)} key={key} onClick={() => onKeyPress(key)}>
               {key}
             </KeyComponent>
           );
@@ -35,19 +32,7 @@ export const Keyboard = ({
       </div>
       <div className={'flex px-6'}>
         {keyList['1'].map((key) => (
-          <KeyComponent
-            status={
-              gameState.flat().find((x) => x.value === key && x.status === 'correct')
-                ? 'correct'
-                : gameState.flat().find((x) => x.value === key && x.status === 'present')
-                ? 'present'
-                : gameState.flat().find((x) => x.value === key && x.status === 'absent')
-                ? 'absent'
-                : 'blank'
-            }
-            key={key}
-            onClick={() => onKeyPress(key)}
-          >
+          <KeyComponent status={getKeyStatus(key)} key={key} onClick={() => onKeyPress(key)}>
             {key}
           </KeyComponent>
         ))}
@@ -57,19 +42,7 @@ export const Keyboard = ({
           ENTER
         </KeyComponent>
         {keyList['2'].map((key) => (
-          <KeyComponent
-            status={
-              gameState.flat().find((x) => x.value === key && x.status === 'correct')
-                ? 'correct'
-                : gameState.flat().find((x) => x.value === key && x.status === 'present')
-                ? 'present'
-                : gameState.flat().find((x) => x.value === key && x.status === 'absent')
-                ? 'absent'
-                : 'blank'
-            }
-            key={key}
-            onClick={() => onKeyPress(key)}
-          >
+          <KeyComponent status={getKeyStatus(key)} key={key} onClick={() => onKeyPress(key)}>
             {key}
           </KeyComponent>
         ))}
@@ -95,16 +68,22 @@ const KeyComponent = ({
   onClick: () => void;
   status: TileStatus;
 }) => {
+  const [shownStatus, setShownStatus] = useState('');
+
+  useEffect(() => {
+    setTimeout(() => setShownStatus(status), 250 * 6 + 100);
+  }, [status]);
+
   return (
     <div
       onClick={onClick}
       style={isLarge ? {flex: '1.4'} : {}}
-      className={`uppercase justify-center select-none text-sm h-14 flex items-center justify-center flex-shrink-1 flex-1 font-bold m-1 cursor-pointer ${
-        status === 'correct'
+      className={`uppercase justify-center rounded-md select-none text-sm h-14 flex items-center justify-center flex-shrink-1 flex-1 font-bold m-1 cursor-pointer ${
+        shownStatus === 'correct'
           ? 'bg-green-600 text-white'
-          : status === 'present'
+          : shownStatus === 'present'
           ? 'bg-yellow-500 text-white'
-          : status === 'absent'
+          : shownStatus === 'absent'
           ? 'bg-gray-500 text-white'
           : 'bg-gray-300 text-black'
       }`}

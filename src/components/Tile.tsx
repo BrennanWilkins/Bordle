@@ -1,4 +1,4 @@
-import {ReactNode, useEffect, useState} from 'react';
+import {ReactNode, useEffect, useRef, useState} from 'react';
 import {TileStatus} from '../logic/gameUtils';
 
 export const Tile = ({
@@ -14,28 +14,37 @@ export const Tile = ({
 }) => {
   const [shownStatus, setShownStatus] = useState('blank');
   const [animateClass, setAnimateClass] = useState('');
+  const animationDelay = useRef(index * 250);
+
+  useEffect(() => {
+    animationDelay.current = index * 250;
+  }, [index]);
 
   useEffect(() => {
     if (!animationEnabled) {
       setShownStatus(status);
       return;
     }
-    if (status === 'attempt') {
+    if (shownStatus === 'attempt' && status === 'blank') {
+      setShownStatus(status);
+    } else if (status === 'attempt') {
       setShownStatus(status);
       setAnimateClass('pop-in');
+      setTimeout(() => setAnimateClass(''), 250);
     } else if (status !== 'blank') {
-      setAnimateClass('flip-in');
       setTimeout(() => {
-        setShownStatus(status);
-        setAnimateClass('flip-out');
-      }, 250);
+        setAnimateClass('flip-in');
+        setTimeout(() => {
+          setShownStatus(status);
+          setAnimateClass('flip-out');
+        }, 250);
+      }, animationDelay.current);
     }
   }, [status]);
 
   return (
-    <div key={animateClass} className={`board-tile w-full relative`}>
+    <div className={`board-tile w-full relative`}>
       <div
-        // style={{animationDelay: `${index * 100}ms`}}
         className={`${animateClass} uppercase absolute z-20 inset-0 border-2 text-2xl font-bold w-full h-full flex justify-center items-center ${
           shownStatus === 'correct'
             ? 'bg-green-600 text-white border-green-600'
@@ -44,7 +53,7 @@ export const Tile = ({
             : shownStatus === 'present'
             ? 'bg-yellow-500 text-white border-yellow-500'
             : shownStatus === 'attempt'
-            ? `bg-white border-gray-300 ${animationEnabled ? 'pop-in' : ''}`
+            ? `bg-white border-gray-300`
             : 'bg-white border-gray-200'
         }`}
       >

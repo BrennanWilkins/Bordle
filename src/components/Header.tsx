@@ -2,7 +2,7 @@ import {TutorialModal} from './TutorialModal';
 import {useState} from 'react';
 
 export const Header = () => {
-  const [showTutorial, setShowTutorial] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(true);
   return (
     <>
       <header
