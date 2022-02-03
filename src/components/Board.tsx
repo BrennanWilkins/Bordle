@@ -2,7 +2,13 @@ import {useEffect, useRef} from 'react';
 import {Tile} from './Tile';
 import {GameState} from '../logic/gameUtils';
 
-export const Board = ({gameState}: {gameState: GameState}) => {
+export const Board = ({
+  gameState,
+  invalidTryCount,
+}: {
+  gameState: GameState;
+  invalidTryCount: number;
+}) => {
   const boardRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -22,12 +28,22 @@ export const Board = ({gameState}: {gameState: GameState}) => {
     };
   }, []);
 
+  const currentRow = gameState.findIndex((row) =>
+    row.some((x) => x.status === 'blank' || x.status === 'attempt'),
+  );
+
   return (
     <div className={'w-full flex flex-col justify-center flex-grow h-0'} ref={containerRef}>
       <div className={'w-full mx-auto max-w-sm flex justify-center'} ref={boardRef}>
         <div className={'grid grid-cols-5 gap-1.5 w-full grid-rows-5'}>
           {gameState.flat().map((tile, idx) => (
-            <Tile key={idx} status={tile.status} index={idx % 5}>
+            <Tile
+              key={idx}
+              status={tile.status}
+              index={idx}
+              invalidTryCount={invalidTryCount}
+              isCurrentRow={currentRow === Math.floor(idx / 5)}
+            >
               {tile.value}
             </Tile>
           ))}

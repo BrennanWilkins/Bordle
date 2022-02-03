@@ -6,19 +6,32 @@ export const Tile = ({
   status,
   animationEnabled = true,
   index,
+  invalidTryCount,
+  isCurrentRow,
 }: {
   children?: ReactNode;
   status: TileStatus;
   animationEnabled?: boolean;
   index: number;
+  invalidTryCount?: number;
+  isCurrentRow?: boolean;
 }) => {
   const [shownStatus, setShownStatus] = useState('blank');
   const [animateClass, setAnimateClass] = useState('');
-  const animationDelay = useRef(index * 250);
+  const animationDelay = useRef((index % 5) * 250);
+  const lastInvalidTryCount = useRef(invalidTryCount);
 
   useEffect(() => {
-    animationDelay.current = index * 250;
+    animationDelay.current = (index % 5) * 250;
   }, [index]);
+
+  useEffect(() => {
+    if (lastInvalidTryCount.current === invalidTryCount) return;
+    if (isCurrentRow) {
+      setAnimateClass('shake');
+    }
+    lastInvalidTryCount.current = invalidTryCount;
+  }, [invalidTryCount, isCurrentRow]);
 
   useEffect(() => {
     if (!animationEnabled) {
