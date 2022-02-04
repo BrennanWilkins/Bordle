@@ -1,17 +1,22 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Header} from './components/Header';
 import {Keyboard} from './components/Keyboard';
 import {Board} from './components/Board';
 import {GameState, GameUtils, keyList} from './logic/gameUtils';
 import {SOLUTIONS, VALID_GUESSES} from './logic/wordList';
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
-  const [answer, setAnswer] = useState('tower');
+  const [answer, setAnswer] = useState(GameUtils.todaysSolution);
   const [gameState, setGameState] = useState<GameState>(GameUtils.initialBoardState);
   const [invalidTryCount, setInvalidTryCount] = useState(0);
+  const pressEnabled = useRef(false);
 
   const onKeyPress = useCallback(
     (key: string) => {
+      if (!pressEnabled.current) return;
+      if (gameState.find((row) => row.every((x) => x.status === 'correct'))) return;
       const newState = gameState.map((x) => [...x]);
       const currentRow = newState.findIndex((row) =>
         row.some((x) => x.status === 'blank' || x.status === 'attempt'),
@@ -29,6 +34,7 @@ export const App = () => {
           const isValid = VALID_GUESSES.includes(word) || SOLUTIONS.includes(word);
           if (!isValid) {
             setInvalidTryCount((x) => x + 1);
+            toast('not in word list');
             return;
           }
           row = row.map((guess, idx) => ({
@@ -68,11 +74,27 @@ export const App = () => {
     };
   }, [onKeyPress]);
 
+  const onTogglePressEnabled = useCallback((isEnabled: boolean) => {
+    pressEnabled.current = isEnabled;
+  }, []);
+
   return (
     <div className={'max-w-2xl px-5 mx-auto flex flex-col min-h-screen'}>
-      <Header />
+      <Header onTogglePressEnabled={onTogglePressEnabled} />
       <Board gameState={gameState} invalidTryCount={invalidTryCount} />
       <Keyboard onKeyPress={onKeyPress} gameState={gameState} />
+      <ToastContainer
+        position={'top-center'}
+        autoClose={3000}
+        hideProgressBar
+        closeButton={false}
+        style={{maxWidth: '200px'}}
+        toastStyle={{
+          color: 'white',
+          backgroundColor: 'rgb(75 85 99)',
+          textAlign: 'center',
+        }}
+      />
     </div>
   );
 };

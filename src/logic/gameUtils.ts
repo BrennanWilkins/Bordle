@@ -1,3 +1,5 @@
+import {SOLUTIONS} from './wordList';
+
 export class GameUtils {
   static get initialBoardState(): GameState {
     return Array(5)
@@ -8,6 +10,12 @@ export class GameUtils {
           status: 'blank',
         }),
       );
+  }
+
+  static get todaysSolution(): string {
+    const startDate = new Date('2/2/2022').getTime();
+    const idx = Math.floor((Date.now() - startDate) / 86400000);
+    return SOLUTIONS[idx % SOLUTIONS.length];
   }
 }
 

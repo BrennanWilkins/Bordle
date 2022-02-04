@@ -1,4 +1,4 @@
-import {ReactNode, useEffect, useRef, useState} from 'react';
+import {ReactNode, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {TileStatus} from '../logic/gameUtils';
 
 export const Tile = ({
@@ -29,11 +29,12 @@ export const Tile = ({
     if (lastInvalidTryCount.current === invalidTryCount) return;
     if (isCurrentRow) {
       setAnimateClass('shake');
+      setTimeout(() => setAnimateClass(''), 800);
     }
     lastInvalidTryCount.current = invalidTryCount;
   }, [invalidTryCount, isCurrentRow]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!animationEnabled) {
       setShownStatus(status);
       return;
