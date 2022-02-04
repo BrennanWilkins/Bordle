@@ -1,5 +1,5 @@
 import {ReactNode, useEffect, useState} from 'react';
-import {GameState, keyList, TileStatus} from '../logic/gameUtils';
+import {GameState, GameUtils, keyList, TileStatus} from '../logic/gameUtils';
 
 export const Keyboard = ({
   onKeyPress,
@@ -8,23 +8,16 @@ export const Keyboard = ({
   onKeyPress: (key: string) => void;
   gameState: GameState;
 }) => {
-  const getKeyStatus = (key: string) => {
-    const flatState = gameState.flat();
-    return flatState.find((x) => x.value === key && x.status === 'correct')
-      ? 'correct'
-      : flatState.find((x) => x.value === key && x.status === 'present')
-      ? 'present'
-      : flatState.find((x) => x.value === key && x.status === 'absent')
-      ? 'absent'
-      : 'blank';
-  };
-
   return (
     <div className={'pb-5 mt-10'}>
       <div className={'flex'}>
         {keyList['0'].map((key) => {
           return (
-            <KeyComponent status={getKeyStatus(key)} key={key} onClick={() => onKeyPress(key)}>
+            <KeyComponent
+              status={GameUtils.getKeyStatus(key, gameState)}
+              key={key}
+              onClick={() => onKeyPress(key)}
+            >
               {key}
             </KeyComponent>
           );
@@ -32,7 +25,11 @@ export const Keyboard = ({
       </div>
       <div className={'flex px-6'}>
         {keyList['1'].map((key) => (
-          <KeyComponent status={getKeyStatus(key)} key={key} onClick={() => onKeyPress(key)}>
+          <KeyComponent
+            status={GameUtils.getKeyStatus(key, gameState)}
+            key={key}
+            onClick={() => onKeyPress(key)}
+          >
             {key}
           </KeyComponent>
         ))}
@@ -42,7 +39,11 @@ export const Keyboard = ({
           ENTER
         </KeyComponent>
         {keyList['2'].map((key) => (
-          <KeyComponent status={getKeyStatus(key)} key={key} onClick={() => onKeyPress(key)}>
+          <KeyComponent
+            status={GameUtils.getKeyStatus(key, gameState)}
+            key={key}
+            onClick={() => onKeyPress(key)}
+          >
             {key}
           </KeyComponent>
         ))}

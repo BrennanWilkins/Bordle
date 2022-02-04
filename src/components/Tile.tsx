@@ -5,25 +5,20 @@ export const Tile = ({
   children,
   status,
   animationEnabled = true,
-  index,
+  animationDelay = 0,
   invalidTryCount,
   isCurrentRow,
 }: {
   children?: ReactNode;
   status: TileStatus;
   animationEnabled?: boolean;
-  index: number;
   invalidTryCount?: number;
   isCurrentRow?: boolean;
+  animationDelay?: number;
 }) => {
   const [shownStatus, setShownStatus] = useState('blank');
   const [animateClass, setAnimateClass] = useState('');
-  const animationDelay = useRef((index % 5) * 250);
   const lastInvalidTryCount = useRef(invalidTryCount);
-
-  useEffect(() => {
-    animationDelay.current = (index % 5) * 250;
-  }, [index]);
 
   useEffect(() => {
     if (lastInvalidTryCount.current === invalidTryCount) return;
@@ -39,20 +34,19 @@ export const Tile = ({
       setShownStatus(status);
       return;
     }
-    if (shownStatus === 'attempt' && status === 'blank') {
+    if (status === 'blank') {
       setShownStatus(status);
     } else if (status === 'attempt') {
       setShownStatus(status);
       setAnimateClass('pop-in');
       setTimeout(() => setAnimateClass(''), 250);
-    } else if (status !== 'blank') {
+    } else {
       setTimeout(() => {
-        setAnimateClass('flip-in');
+        setAnimateClass('flip-in-out');
         setTimeout(() => {
           setShownStatus(status);
-          setAnimateClass('flip-out');
         }, 250);
-      }, animationDelay.current);
+      }, animationDelay);
     }
   }, [status]);
 

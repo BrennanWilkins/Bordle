@@ -1,6 +1,6 @@
 import {useEffect, useRef} from 'react';
 import {Tile} from './Tile';
-import {GameState} from '../logic/gameUtils';
+import {GameState, GameUtils} from '../logic/gameUtils';
 
 export const Board = ({
   gameState,
@@ -28,9 +28,7 @@ export const Board = ({
     };
   }, []);
 
-  const currentRow = gameState.findIndex((row) =>
-    row.some((x) => x.status === 'blank' || x.status === 'attempt'),
-  );
+  const currentRow = GameUtils.getCurrentRowIdx(gameState);
 
   return (
     <div className={'w-full flex flex-col justify-center flex-grow h-0'} ref={containerRef}>
@@ -40,9 +38,9 @@ export const Board = ({
             <Tile
               key={idx}
               status={tile.status}
-              index={idx}
               invalidTryCount={invalidTryCount}
               isCurrentRow={currentRow === Math.floor(idx / 5)}
+              animationDelay={(idx % 5) * 250}
             >
               {tile.value}
             </Tile>

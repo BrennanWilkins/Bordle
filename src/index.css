@@ -57,11 +57,8 @@ code {
     }
 }
 
-.flip-in {
-    animation: flipIn 250ms ease-in;
-}
-.flip-out {
-    animation: flipOut 250ms ease-in;
+.flip-in-out {
+    animation: flipIn 250ms ease-in, flipOut 250ms 250ms ease-in;
 }
 .pop-in {
     animation: popIn 250ms;

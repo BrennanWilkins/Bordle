@@ -31,7 +31,11 @@ export const ModalContainer = ({
             }
           }}
         >
-          <div className={'rounded-lg shadow-2xl bg-white max-w-xl w-full relative z-10 p-5 pt-10'}>
+          <div
+            className={
+              'modal-container rounded-lg shadow-2xl bg-white max-w-xl overflow-y-auto w-full relative z-10 p-5 pt-10'
+            }
+          >
             <button
               className={
                 'absolute right-1 top-1 hover:text-gray-600 text-gray-400 transition-colors'

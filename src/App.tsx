@@ -2,13 +2,11 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Header} from './components/Header';
 import {Keyboard} from './components/Keyboard';
 import {Board} from './components/Board';
-import {GameState, GameUtils, keyList} from './logic/gameUtils';
-import {SOLUTIONS, VALID_GUESSES} from './logic/wordList';
+import {allKeysList, GameState, GameUtils} from './logic/gameUtils';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
-  const [answer, setAnswer] = useState(GameUtils.todaysSolution);
   const [gameState, setGameState] = useState<GameState>(GameUtils.initialBoardState);
   const [invalidTryCount, setInvalidTryCount] = useState(0);
   const pressEnabled = useRef(false);
@@ -18,10 +16,8 @@ export const App = () => {
       if (!pressEnabled.current) return;
       if (gameState.find((row) => row.every((x) => x.status === 'correct'))) return;
       const newState = gameState.map((x) => [...x]);
-      const currentRow = newState.findIndex((row) =>
-        row.some((x) => x.status === 'blank' || x.status === 'attempt'),
-      );
-      let row = newState[currentRow];
+      const currentRowIdx = GameUtils.getCurrentRowIdx(newState);
+      let row = newState[currentRowIdx];
       const lastEnteredIdx = row.findIndex((x) => !x.value);
       const remainingLength = row.filter((x) => !x.value).length;
       if (key === 'back') {
@@ -30,30 +26,26 @@ export const App = () => {
         row[idx] = {status: 'blank', value: ''};
       } else if (key === 'enter') {
         if (remainingLength === 0) {
-          const word = row.map((x) => x.value).join('');
-          const isValid = VALID_GUESSES.includes(word) || SOLUTIONS.includes(word);
+          const isValid = GameUtils.guessIsValid(row);
           if (!isValid) {
             setInvalidTryCount((x) => x + 1);
             toast('not in word list');
             return;
           }
-          row = row.map((guess, idx) => ({
-            status:
-              guess.value === answer[idx]
-                ? 'correct'
-                : answer.includes(guess.value)
-                ? 'present'
-                : 'absent',
-            value: guess.value,
-          }));
+          row = GameUtils.updateRowStatus(row);
         }
       } else if (remainingLength > 0) {
         row[lastEnteredIdx] = {status: 'attempt', value: key};
       }
-      newState[currentRow] = row;
-      setGameState(newState);
+      newState[currentRowIdx] = row;
+      if (
+        newState[currentRowIdx].map((x) => x.value + x.status).join('') !==
+        gameState[currentRowIdx].map((x) => x.value + x.status).join('')
+      ) {
+        setGameState(newState);
+      }
     },
-    [answer, gameState],
+    [gameState],
   );
 
   useEffect(() => {
@@ -63,7 +55,7 @@ export const App = () => {
         onKeyPress('enter');
       } else if (e.key === 'Backspace') {
         onKeyPress('back');
-      } else if ([...keyList['0'], ...keyList['1'], ...keyList['2']].includes(e.key)) {
+      } else if (allKeysList.includes(e.key)) {
         onKeyPress(e.key);
       }
     };
