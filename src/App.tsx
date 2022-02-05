@@ -73,7 +73,7 @@ export const App = () => {
 
   return (
     <div className={'max-w-2xl px-5 mx-auto flex flex-col min-h-screen'}>
-      <Header onTogglePressEnabled={onTogglePressEnabled} />
+      <Header onTogglePressEnabled={onTogglePressEnabled} statistics={statistics} />
       <Board gameState={gameState} invalidTryCount={invalidTryCount} />
       <Keyboard onKeyPress={onKeyPress} gameState={gameState} />
       <ToastContainer

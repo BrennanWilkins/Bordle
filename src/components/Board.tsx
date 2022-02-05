@@ -1,6 +1,7 @@
-import {useEffect, useRef} from 'react';
+import {useRef} from 'react';
 import {Tile} from './Tile';
 import {GameState, GameUtils} from '../logic/gameUtils';
+import {useResize} from '../hooks/useResize';
 
 export const Board = ({
   gameState,
@@ -12,21 +13,13 @@ export const Board = ({
   const boardRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const onResize = () => {
-      if (!boardRef.current || !containerRef.current) return;
-      const remainingHeight = containerRef.current.clientHeight;
-      const remainingWidth = containerRef.current.clientWidth;
-      boardRef.current.style.width =
-        (remainingWidth < remainingHeight ? remainingWidth : remainingHeight) + 'px';
-    };
-
-    window.addEventListener('resize', onResize);
-    onResize();
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  }, []);
+  useResize(() => {
+    if (!boardRef.current || !containerRef.current) return;
+    const remainingHeight = containerRef.current.clientHeight;
+    const remainingWidth = containerRef.current.clientWidth;
+    boardRef.current.style.width =
+      (remainingWidth < remainingHeight ? remainingWidth : remainingHeight) + 'px';
+  });
 
   const currentRow = GameUtils.getCurrentRowIdx(gameState);
 
