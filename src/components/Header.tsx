@@ -1,13 +1,9 @@
 import {TutorialModal} from './TutorialModal';
-import {memo, useEffect, useState} from 'react';
+import {memo, useState} from 'react';
 
 export const Header = memo(
   ({onTogglePressEnabled}: {onTogglePressEnabled: (isEnabled: boolean) => void}) => {
-    const [showTutorial, setShowTutorial] = useState(false);
-
-    useEffect(() => {
-      setShowTutorial(true);
-    }, []);
+    const [showTutorial, setShowTutorial] = useState(true);
 
     return (
       <>

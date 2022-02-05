@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Header} from './components/Header';
 import {Keyboard} from './components/Keyboard';
 import {Board} from './components/Board';
-import {allKeysList, GameState, GameUtils} from './logic/gameUtils';
+import {GameState, GameUtils} from './logic/gameUtils';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,8 +13,7 @@ export const App = () => {
 
   const onKeyPress = useCallback(
     (key: string) => {
-      if (!pressEnabled.current) return;
-      if (gameState.find((row) => row.every((x) => x.status === 'correct'))) return;
+      if (!pressEnabled.current || GameUtils.hasWon(gameState)) return;
       const newState = gameState.map((x) => [...x]);
       const currentRowIdx = GameUtils.getCurrentRowIdx(newState);
       let row = newState[currentRowIdx];
@@ -49,13 +48,13 @@ export const App = () => {
   );
 
   useEffect(() => {
-    const onKeyDown = (e: any) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return;
       if (e.key === 'Enter') {
         onKeyPress('enter');
       } else if (e.key === 'Backspace') {
         onKeyPress('back');
-      } else if (allKeysList.includes(e.key)) {
+      } else if (GameUtils.allKeysList.includes(e.key)) {
         onKeyPress(e.key);
       }
     };
@@ -83,7 +82,7 @@ export const App = () => {
         style={{maxWidth: '200px'}}
         toastStyle={{
           color: 'white',
-          backgroundColor: 'rgb(75 85 99)',
+          backgroundColor: 'rgb(75,85,99)',
           textAlign: 'center',
         }}
       />

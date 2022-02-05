@@ -86,3 +86,25 @@ code {
         transform: translate3d(4px, 0, 0);
     }
 }
+
+.bounce {
+    animation: bounce 800ms ease-in;
+}
+
+@keyframes bounce {
+    0%, 25%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-55%);
+    }
+    50% {
+        transform: translateY(4%);
+    }
+    60% {
+        transform: translateY(-20%);
+    }
+    80% {
+        transform: translateY(2%);
+    }
+}

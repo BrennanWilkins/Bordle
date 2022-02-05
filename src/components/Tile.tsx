@@ -43,10 +43,15 @@ export const Tile = ({
     } else {
       setTimeout(() => {
         setAnimateClass('flip-in-out');
-        setTimeout(() => {
-          setShownStatus(status);
-        }, 250);
       }, animationDelay);
+      setTimeout(() => {
+        setShownStatus(status);
+      }, animationDelay + 250);
+      if (status === 'done') {
+        setTimeout(() => {
+          setAnimateClass('bounce');
+        }, 1750 + animationDelay / 3);
+      }
     }
   }, [status]);
 
@@ -54,7 +59,7 @@ export const Tile = ({
     <div className={`board-tile w-full relative`}>
       <div
         className={`${animateClass} uppercase absolute z-20 inset-0 border-2 text-2xl font-bold w-full h-full flex justify-center items-center ${
-          shownStatus === 'correct'
+          shownStatus === 'correct' || shownStatus === 'done'
             ? 'bg-green-600 text-white border-green-600'
             : shownStatus === 'absent'
             ? 'bg-gray-500 text-white border-gray-500'

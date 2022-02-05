@@ -1,5 +1,5 @@
 import {ReactNode, useEffect, useState} from 'react';
-import {GameState, GameUtils, keyList, TileStatus} from '../logic/gameUtils';
+import {GameState, GameUtils, TileStatus} from '../logic/gameUtils';
 
 export const Keyboard = ({
   onKeyPress,
@@ -11,7 +11,7 @@ export const Keyboard = ({
   return (
     <div className={'pb-5 mt-10'}>
       <div className={'flex'}>
-        {keyList['0'].map((key) => {
+        {GameUtils.keyList['0'].map((key) => {
           return (
             <KeyComponent
               status={GameUtils.getKeyStatus(key, gameState)}
@@ -24,7 +24,7 @@ export const Keyboard = ({
         })}
       </div>
       <div className={'flex px-6'}>
-        {keyList['1'].map((key) => (
+        {GameUtils.keyList['1'].map((key) => (
           <KeyComponent
             status={GameUtils.getKeyStatus(key, gameState)}
             key={key}
@@ -38,7 +38,7 @@ export const Keyboard = ({
         <KeyComponent status={'blank'} isLarge onClick={() => onKeyPress('enter')}>
           ENTER
         </KeyComponent>
-        {keyList['2'].map((key) => (
+        {GameUtils.keyList['2'].map((key) => (
           <KeyComponent
             status={GameUtils.getKeyStatus(key, gameState)}
             key={key}

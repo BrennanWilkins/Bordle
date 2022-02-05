@@ -1,6 +1,6 @@
 import {CSSTransition} from 'react-transition-group';
 import './ModalContainer.css';
-import {ReactNode} from 'react';
+import {ReactNode, useEffect, useState} from 'react';
 
 export const ModalContainer = ({
   show,
@@ -11,10 +11,16 @@ export const ModalContainer = ({
   close: () => void;
   children: ReactNode;
 }) => {
+  const [isShown, setIsShown] = useState(false);
+
+  useEffect(() => {
+    setIsShown(show);
+  }, [show]);
+
   return (
     <>
       <CSSTransition
-        in={show}
+        in={isShown}
         timeout={300}
         className={'backdrop fixed inset-0 w-full h-full'}
         classNames={'backdrop'}
@@ -22,7 +28,7 @@ export const ModalContainer = ({
       >
         <div />
       </CSSTransition>
-      <CSSTransition in={show} timeout={300} classNames="modal" unmountOnExit>
+      <CSSTransition in={isShown} timeout={300} classNames="modal" unmountOnExit>
         <div
           className={'fixed inset-0 z-50 overflow-hidden flex items-start p-5 pt-20 justify-center'}
           onClick={(e) => {

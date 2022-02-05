@@ -31,15 +31,24 @@ export class GameUtils {
 
   static updateRowStatus(row: GameState[0]): GameState[0] {
     const answer = this.todaysSolution;
+    const word = row.map((x) => x.value).join('');
     return row.map((guess, idx) => ({
       status:
-        guess.value === answer[idx]
+        word === answer
+          ? 'done'
+          : guess.value === answer[idx]
           ? 'correct'
           : answer.includes(guess.value)
           ? 'present'
           : 'absent',
       value: guess.value,
     }));
+  }
+
+  static hasWon(gameState: GameState) {
+    return !!gameState.find((row) =>
+      row.every((x) => x.status === 'correct' || x.status === 'done'),
+    );
   }
 
   static getKeyStatus(key: string, gameState: GameState) {
@@ -52,19 +61,19 @@ export class GameUtils {
       ? 'absent'
       : 'blank';
   }
+
+  static keyList = {
+    '0': ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+    '1': ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+    '2': ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
+  };
+
+  static allKeysList = [...this.keyList['0'], ...this.keyList['1'], ...this.keyList['2']];
 }
 
-export type TileStatus = 'correct' | 'absent' | 'present' | 'blank' | 'attempt';
+export type TileStatus = 'correct' | 'absent' | 'present' | 'blank' | 'attempt' | 'done';
 
 export type GameState = {
   value: string;
   status: TileStatus;
 }[][];
-
-export const keyList = {
-  '0': ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-  '1': ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-  '2': ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
-};
-
-export const allKeysList = [...keyList['0'], ...keyList['1'], ...keyList['2']];
