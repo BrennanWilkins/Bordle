@@ -12,6 +12,15 @@ export class GameUtils {
       );
   }
 
+  static get initialStats(): Statistics {
+    return {
+      gamesPlayed: 0,
+      streak: 0,
+      maxStreak: 0,
+      guesses: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0},
+    };
+  }
+
   static get todaysSolution(): string {
     const startDate = new Date('2/2/2022').getTime();
     const idx = Math.floor((Date.now() - startDate) / 86400000);
@@ -45,10 +54,14 @@ export class GameUtils {
     }));
   }
 
-  static hasWon(gameState: GameState) {
-    return !!gameState.find((row) =>
+  static winIndex(gameState: GameState) {
+    return gameState.findIndex((row) =>
       row.every((x) => x.status === 'correct' || x.status === 'done'),
     );
+  }
+
+  static hasWon(gameState: GameState) {
+    return this.winIndex(gameState) !== -1;
   }
 
   static getKeyStatus(key: string, gameState: GameState) {
@@ -69,6 +82,33 @@ export class GameUtils {
   };
 
   static allKeysList = [...this.keyList['0'], ...this.keyList['1'], ...this.keyList['2']];
+
+  static getWinPercentage(statistics: Statistics) {
+    if (statistics.gamesPlayed === 0) return 0;
+    return Math.round(
+      (Object.values(statistics.guesses).reduce((a, b) => a + b, 0) * 100) / statistics.gamesPlayed,
+    );
+  }
+
+  static getHighestGuess(statistics: Statistics) {
+    return Math.max(...Object.values(statistics.guesses));
+  }
+
+  static updateStats(statistics: Statistics, gameState: GameState) {
+    const winIndex = this.winIndex(gameState);
+    if (winIndex === -1) return statistics;
+
+    const newStreak = statistics.streak + 1;
+    return {
+      gamesPlayed: statistics.gamesPlayed + 1,
+      streak: newStreak,
+      maxStreak: newStreak > statistics.maxStreak ? newStreak : statistics.maxStreak,
+      guesses: {
+        ...statistics.guesses,
+        [winIndex + 1]: statistics.guesses[(winIndex + 1) as keyof Statistics['guesses']] + 1,
+      },
+    };
+  }
 }
 
 export type TileStatus = 'correct' | 'absent' | 'present' | 'blank' | 'attempt' | 'done';
@@ -77,3 +117,10 @@ export type GameState = {
   value: string;
   status: TileStatus;
 }[][];
+
+export type Statistics = {
+  gamesPlayed: number;
+  streak: number;
+  maxStreak: number;
+  guesses: {1: number; 2: number; 3: number; 4: number; 5: number; 6: number};
+};

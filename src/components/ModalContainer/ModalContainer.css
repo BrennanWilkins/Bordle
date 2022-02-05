@@ -1,10 +1,10 @@
 .modal-enter {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.9) translateY(-40px);
 }
 .modal-enter-active {
     opacity: 1;
-    transform: translateX(0);
+    transform: scale(1) translateY(0);
     transition: opacity 300ms, transform 300ms;
 }
 .modal-exit {
@@ -12,7 +12,7 @@
 }
 .modal-exit-active {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.9) translateY(-40px);
     transition: opacity 300ms, transform 300ms;
 }
 .backdrop {
@@ -38,14 +38,14 @@
 }
 
 .modal-container::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
 }
 .modal-container::-webkit-scrollbar-track {
     background-color: transparent;
 }
 
 .modal-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.2);
-    border-radius: 12px;
+    background-color: rgba(0,0,0,0.12);
+    border-radius: 10px;
 }

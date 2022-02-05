@@ -10,6 +10,7 @@ export const App = () => {
   const [gameState, setGameState] = useState<GameState>(GameUtils.initialBoardState);
   const [invalidTryCount, setInvalidTryCount] = useState(0);
   const pressEnabled = useRef(false);
+  const [statistics, setStatistics] = useState(GameUtils.initialStats);
 
   const onKeyPress = useCallback(
     (key: string) => {
@@ -43,6 +44,7 @@ export const App = () => {
       ) {
         setGameState(newState);
       }
+      setStatistics((stats) => GameUtils.updateStats(stats, newState));
     },
     [gameState],
   );

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    h1 {
+        @apply tracking-wider sm:text-4xl text-3xl font-bold;
+    }
+    h3 {
+        @apply tracking-wider text-lg text-center font-bold;
+    }
+}
+
 html, body {
     height: 100%;
     overflow: hidden;

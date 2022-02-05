@@ -9,7 +9,7 @@ export const Keyboard = ({
   gameState: GameState;
 }) => {
   return (
-    <div className={'pb-5 mt-10'}>
+    <div className={'pb-5 mt-10 -mx-3 -mb-3'}>
       <div className={'flex'}>
         {GameUtils.keyList['0'].map((key) => {
           return (
@@ -23,7 +23,7 @@ export const Keyboard = ({
           );
         })}
       </div>
-      <div className={'flex px-6'}>
+      <div className={'flex sm:px-6 px-4'}>
         {GameUtils.keyList['1'].map((key) => (
           <KeyComponent
             status={GameUtils.getKeyStatus(key, gameState)}
@@ -76,10 +76,10 @@ const KeyComponent = ({
   }, [status]);
 
   return (
-    <div
+    <button
       onClick={onClick}
       style={isLarge ? {flex: '1.4'} : {}}
-      className={`uppercase justify-center rounded-md select-none text-sm h-14 flex items-center justify-center flex-shrink-1 flex-1 font-bold m-1 cursor-pointer ${
+      className={`uppercase justify-center rounded-md select-none text-sm h-14 flex items-center justify-center flex-shrink-1 flex-1 font-bold m-[0.15rem] md:m-1 cursor-pointer ${
         shownStatus === 'correct'
           ? 'bg-green-600 text-white'
           : shownStatus === 'present'
@@ -90,6 +90,6 @@ const KeyComponent = ({
       }`}
     >
       {children}
-    </div>
+    </button>
   );
 };
