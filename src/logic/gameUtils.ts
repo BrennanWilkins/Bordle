@@ -21,10 +21,13 @@ export class GameUtils {
     };
   }
 
-  static get todaysSolution(): string {
+  static get solutionIdx() {
     const startDate = new Date('2/2/2022').getTime();
-    const idx = Math.floor((Date.now() - startDate) / 86400000);
-    return SOLUTIONS[idx % SOLUTIONS.length];
+    return Math.floor((Date.now() - startDate) / 86400000);
+  }
+
+  static get todaysSolution(): string {
+    return SOLUTIONS[this.solutionIdx];
   }
 
   static getCurrentRowIdx(gameState: GameState) {
@@ -130,6 +133,27 @@ export class GameUtils {
         [winIndex + 1]: statistics.guesses[(winIndex + 1) as keyof Statistics['guesses']] + 1,
       },
     };
+  }
+
+  static getShareText(gameState: GameState) {
+    const emojiBoard = gameState
+      .filter((row) => !row.every((x) => x.status === 'blank'))
+      .map((row) =>
+        row
+          .map((x) =>
+            x.status === 'correct' || x.status === 'done'
+              ? '🟩'
+              : x.status === 'present'
+              ? '🟨'
+              : '⬜',
+          )
+          .join(''),
+      )
+      .join('\n');
+
+    return `Bordle ${this.solutionIdx} ${
+      this.hasFailed(gameState) ? 'X' : this.winIndex(gameState) + 1
+    }/6\n\n${emojiBoard}`;
   }
 }
 

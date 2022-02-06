@@ -3,8 +3,8 @@ import {Header} from './components/Header';
 import {Keyboard} from './components/Keyboard';
 import {Board} from './components/Board';
 import {GameState, GameUtils, Statistics} from './logic/gameUtils';
-import {toast, ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {Toaster, toasty} from './components/Toaster';
+import {isMobileBrowser} from './logic/isMobileBrowser';
 
 export const App = () => {
   const [gameState, setGameState] = useState<GameState>(() => {
@@ -50,7 +50,7 @@ export const App = () => {
           const isValid = GameUtils.guessIsValid(row);
           if (!isValid) {
             setInvalidTryCount((x) => x + 1);
-            toast('not in word list');
+            toasty('not in word list', 'gameState');
             return;
           }
           row = GameUtils.updateRowStatus(row);
@@ -67,7 +67,7 @@ export const App = () => {
       }
 
       if (GameUtils.hasFailed(newState)) {
-        setTimeout(() => toast(GameUtils.todaysSolution), 2000);
+        setTimeout(() => toasty(GameUtils.todaysSolution, 'gameState'), 2000);
       }
       setStatistics((stats) => GameUtils.updateStats(stats, newState));
 
@@ -100,27 +100,29 @@ export const App = () => {
     pressEnabled.current = isEnabled;
   }, []);
 
+  const onShare = useCallback(async () => {
+    const data = {
+      text: GameUtils.getShareText(gameState),
+    };
+    if (isMobileBrowser() && navigator.canShare(data)) {
+      await navigator.share(data);
+    } else {
+      await navigator.clipboard.writeText(GameUtils.getShareText(gameState));
+      toasty('copied to clipboard', 'notification');
+    }
+  }, [isGameOver]);
+
   return (
     <div className={'max-w-2xl px-5 mx-auto flex flex-col min-h-screen'}>
       <Header
         onTogglePressEnabled={onTogglePressEnabled}
         statistics={statistics}
         isGameOver={GameUtils.hasFinished(gameState)}
+        onShare={onShare}
       />
       <Board gameState={gameState} invalidTryCount={invalidTryCount} />
       <Keyboard onKeyPress={onKeyPress} gameState={gameState} />
-      <ToastContainer
-        position={'top-center'}
-        autoClose={isGameOver ? false : 3000}
-        hideProgressBar
-        closeButton={false}
-        style={{maxWidth: '200px'}}
-        toastStyle={{
-          color: 'white',
-          backgroundColor: 'rgb(75,85,99)',
-          textAlign: 'center',
-        }}
-      />
+      <Toaster isGameOver={isGameOver} />
     </div>
   );
 };

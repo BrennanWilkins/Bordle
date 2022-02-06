@@ -9,10 +9,12 @@ export const Header = memo(
     onTogglePressEnabled,
     statistics,
     isGameOver,
+    onShare,
   }: {
     onTogglePressEnabled: (isEnabled: boolean) => void;
     statistics: Statistics;
     isGameOver: boolean;
+    onShare: () => Promise<void>;
   }) => {
     const [showTutorial, setShowTutorial] = useState(() => {
       return !localStorage.getItem('lastPlayed');
@@ -72,6 +74,7 @@ export const Header = memo(
           }}
         />
         <StatsModal
+          onShare={onShare}
           show={showStats}
           close={() => {
             setShowStats(false);

@@ -7,11 +7,13 @@ export const StatsModal = ({
   close,
   statistics,
   isGameOver,
+  onShare,
 }: {
   show: boolean;
   close: () => void;
   statistics: Statistics;
   isGameOver: boolean;
+  onShare: () => Promise<void>;
 }) => {
   const highestGuess = GameUtils.getHighestGuess(statistics);
 
@@ -57,6 +59,7 @@ export const StatsModal = ({
           </div>
           <div className={'border-r mx-8 border-gray-500'} />
           <button
+            onClick={onShare}
             className={
               'rounded-md bg-green-600 text-white py-4 px-6 font-bold text-2xl flex items-center'
             }
