@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Header} from './components/Header';
 import {Keyboard} from './components/Keyboard';
 import {Board} from './components/Board';
@@ -11,10 +11,11 @@ export const App = () => {
   const [invalidTryCount, setInvalidTryCount] = useState(0);
   const pressEnabled = useRef(false);
   const [statistics, setStatistics] = useState(GameUtils.initialStats);
+  const isGameOver = useMemo(() => GameUtils.hasFinished(gameState), [gameState]);
 
   const onKeyPress = useCallback(
     (key: string) => {
-      if (!pressEnabled.current || GameUtils.hasWon(gameState)) return;
+      if (!pressEnabled.current || isGameOver) return;
       const newState = gameState.map((x) => [...x]);
       const currentRowIdx = GameUtils.getCurrentRowIdx(newState);
       let row = newState[currentRowIdx];
@@ -43,6 +44,10 @@ export const App = () => {
         gameState[currentRowIdx].map((x) => x.value + x.status).join('')
       ) {
         setGameState(newState);
+      }
+
+      if (GameUtils.hasFailed(newState)) {
+        setTimeout(() => toast(GameUtils.todaysSolution), 2000);
       }
       setStatistics((stats) => GameUtils.updateStats(stats, newState));
     },
@@ -73,12 +78,16 @@ export const App = () => {
 
   return (
     <div className={'max-w-2xl px-5 mx-auto flex flex-col min-h-screen'}>
-      <Header onTogglePressEnabled={onTogglePressEnabled} statistics={statistics} />
+      <Header
+        onTogglePressEnabled={onTogglePressEnabled}
+        statistics={statistics}
+        isGameOver={GameUtils.hasFinished(gameState)}
+      />
       <Board gameState={gameState} invalidTryCount={invalidTryCount} />
       <Keyboard onKeyPress={onKeyPress} gameState={gameState} />
       <ToastContainer
         position={'top-center'}
-        autoClose={3000}
+        autoClose={isGameOver ? false : 3000}
         hideProgressBar
         closeButton={false}
         style={{maxWidth: '200px'}}

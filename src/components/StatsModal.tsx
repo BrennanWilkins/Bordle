@@ -1,14 +1,17 @@
 import {ModalContainer} from './ModalContainer/ModalContainer';
 import {GameUtils, Statistics} from '../logic/gameUtils';
+import {CountDownText} from './CountDownText';
 
 export const StatsModal = ({
   show,
   close,
   statistics,
+  isGameOver,
 }: {
   show: boolean;
   close: () => void;
   statistics: Statistics;
+  isGameOver: boolean;
 }) => {
   const highestGuess = GameUtils.getHighestGuess(statistics);
 
@@ -46,6 +49,25 @@ export const StatsModal = ({
           </div>
         ))}
       </div>
+      {isGameOver && (
+        <div className={'flex justify-center mt-5'}>
+          <div>
+            <h3>NEXT BORDLE</h3>
+            <CountDownText />
+          </div>
+          <div className={'border-r mx-8 border-gray-500'} />
+          <button
+            className={
+              'rounded-md bg-green-600 text-white py-4 px-6 font-bold text-2xl flex items-center'
+            }
+          >
+            share
+            <svg className={'ml-2 w-6 h-6 fill-current'} viewBox="0 0 16 16">
+              <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z" />
+            </svg>
+          </button>
+        </div>
+      )}
     </ModalContainer>
   );
 };

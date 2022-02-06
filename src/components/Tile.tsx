@@ -19,12 +19,14 @@ export const Tile = ({
   const [shownStatus, setShownStatus] = useState('blank');
   const [animateClass, setAnimateClass] = useState('');
   const lastInvalidTryCount = useRef(invalidTryCount);
+  const animTimeout = useRef<number>();
 
   useEffect(() => {
     if (lastInvalidTryCount.current === invalidTryCount) return;
     if (isCurrentRow) {
+      if (animTimeout.current) clearTimeout(animTimeout.current);
       setAnimateClass('shake');
-      setTimeout(() => setAnimateClass(''), 800);
+      animTimeout.current = window.setTimeout(() => setAnimateClass(''), 800);
     }
     lastInvalidTryCount.current = invalidTryCount;
   }, [invalidTryCount, isCurrentRow]);
@@ -39,7 +41,7 @@ export const Tile = ({
     } else if (status === 'attempt') {
       setShownStatus(status);
       setAnimateClass('pop-in');
-      setTimeout(() => setAnimateClass(''), 250);
+      animTimeout.current = window.setTimeout(() => setAnimateClass(''), 250);
     } else {
       setTimeout(() => {
         setAnimateClass('flip-in-out');

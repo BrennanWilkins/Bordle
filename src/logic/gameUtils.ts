@@ -60,6 +60,20 @@ export class GameUtils {
     );
   }
 
+  static hasFinished(gameState: GameState) {
+    return (
+      this.hasWon(gameState) ||
+      gameState.every((row) => row.every((x) => x.status !== 'attempt' && x.status !== 'blank'))
+    );
+  }
+
+  static hasFailed(gameState: GameState) {
+    return (
+      !this.hasWon(gameState) &&
+      gameState.every((row) => row.every((x) => x.status !== 'attempt' && x.status !== 'blank'))
+    );
+  }
+
   static hasWon(gameState: GameState) {
     return this.winIndex(gameState) !== -1;
   }
@@ -95,8 +109,16 @@ export class GameUtils {
   }
 
   static updateStats(statistics: Statistics, gameState: GameState) {
+    if (!this.hasFinished(gameState)) return statistics;
+
     const winIndex = this.winIndex(gameState);
-    if (winIndex === -1) return statistics;
+
+    if (winIndex === -1) {
+      return {
+        ...statistics,
+        gamesPlayed: statistics.gamesPlayed + 1,
+      };
+    }
 
     const newStreak = statistics.streak + 1;
     return {

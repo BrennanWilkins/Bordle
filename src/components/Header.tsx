@@ -8,15 +8,17 @@ export const Header = memo(
   ({
     onTogglePressEnabled,
     statistics,
+    isGameOver,
   }: {
     onTogglePressEnabled: (isEnabled: boolean) => void;
     statistics: Statistics;
+    isGameOver: boolean;
   }) => {
     const [showTutorial, setShowTutorial] = useState(true);
     const [showStats, setShowStats] = useState(false);
 
     useDidUpdate(() => {
-      setTimeout(() => setShowStats(true), 3200);
+      setTimeout(() => setShowStats(true), 3500);
     }, [statistics]);
 
     return (
@@ -71,6 +73,7 @@ export const Header = memo(
             onTogglePressEnabled(true);
           }}
           statistics={statistics}
+          isGameOver={isGameOver}
         />
       </>
     );
