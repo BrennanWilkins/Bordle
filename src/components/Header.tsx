@@ -14,11 +14,16 @@ export const Header = memo(
     statistics: Statistics;
     isGameOver: boolean;
   }) => {
-    const [showTutorial, setShowTutorial] = useState(true);
+    const [showTutorial, setShowTutorial] = useState(() => {
+      return !localStorage.getItem('lastPlayed');
+    });
     const [showStats, setShowStats] = useState(false);
 
     useDidUpdate(() => {
-      setTimeout(() => setShowStats(true), 3500);
+      setTimeout(() => {
+        setShowStats(true);
+        onTogglePressEnabled(false);
+      }, 3500);
     }, [statistics]);
 
     return (

@@ -8,6 +8,7 @@ export const Tile = ({
   animationDelay = 0,
   invalidTryCount,
   isCurrentRow,
+  animateOnMount = false,
 }: {
   children?: ReactNode;
   status: TileStatus;
@@ -15,15 +16,16 @@ export const Tile = ({
   invalidTryCount?: number;
   isCurrentRow?: boolean;
   animationDelay?: number;
+  animateOnMount?: boolean;
 }) => {
   const [shownStatus, setShownStatus] = useState('blank');
   const [animateClass, setAnimateClass] = useState('');
   const lastInvalidTryCount = useRef(invalidTryCount);
   const animTimeout = useRef<number>();
+  const hasMounted = useRef(false);
 
   useEffect(() => {
-    if (lastInvalidTryCount.current === invalidTryCount) return;
-    if (isCurrentRow) {
+    if (lastInvalidTryCount.current !== invalidTryCount && isCurrentRow) {
       if (animTimeout.current) clearTimeout(animTimeout.current);
       setAnimateClass('shake');
       animTimeout.current = window.setTimeout(() => setAnimateClass(''), 800);
@@ -32,11 +34,10 @@ export const Tile = ({
   }, [invalidTryCount, isCurrentRow]);
 
   useLayoutEffect(() => {
-    if (!animationEnabled) {
+    if (!hasMounted.current && !animateOnMount) {
       setShownStatus(status);
-      return;
-    }
-    if (status === 'blank') {
+      hasMounted.current = true;
+    } else if (!animationEnabled || status === 'blank') {
       setShownStatus(status);
     } else if (status === 'attempt') {
       setShownStatus(status);

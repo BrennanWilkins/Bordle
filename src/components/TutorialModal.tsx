@@ -22,6 +22,7 @@ export const TutorialModal = ({show, close}: {show: boolean; close: () => void})
             animationDelay={400}
             animationEnabled={idx === 0}
             status={idx === 0 ? 'correct' : 'attempt'}
+            animateOnMount
           >
             {char}
           </Tile>
@@ -37,6 +38,7 @@ export const TutorialModal = ({show, close}: {show: boolean; close: () => void})
             animationDelay={400}
             animationEnabled={idx === 1}
             status={idx === 1 ? 'present' : 'attempt'}
+            animateOnMount
           >
             {char}
           </Tile>
@@ -52,6 +54,7 @@ export const TutorialModal = ({show, close}: {show: boolean; close: () => void})
             animationDelay={400}
             animationEnabled={idx === 3}
             status={idx === 3 ? 'absent' : 'attempt'}
+            animateOnMount
           >
             {char}
           </Tile>

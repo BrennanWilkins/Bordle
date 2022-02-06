@@ -1,4 +1,4 @@
-import {ReactNode, useEffect, useState} from 'react';
+import {ReactNode, useEffect, useRef, useState} from 'react';
 import {GameState, GameUtils, TileStatus} from '../logic/gameUtils';
 
 export const Keyboard = ({
@@ -70,9 +70,15 @@ const KeyComponent = ({
   status: TileStatus;
 }) => {
   const [shownStatus, setShownStatus] = useState('');
+  const hasMounted = useRef(false);
 
   useEffect(() => {
-    setTimeout(() => setShownStatus(status), 250 * 6 + 100);
+    if (!hasMounted.current) {
+      setShownStatus(status);
+      hasMounted.current = true;
+    } else {
+      setTimeout(() => setShownStatus(status), 250 * 6 + 100);
+    }
   }, [status]);
 
   return (

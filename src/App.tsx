@@ -2,15 +2,35 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Header} from './components/Header';
 import {Keyboard} from './components/Keyboard';
 import {Board} from './components/Board';
-import {GameState, GameUtils} from './logic/gameUtils';
+import {GameState, GameUtils, Statistics} from './logic/gameUtils';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
-  const [gameState, setGameState] = useState<GameState>(GameUtils.initialBoardState);
+  const [gameState, setGameState] = useState<GameState>(() => {
+    const lastPlayedLS = localStorage.getItem('lastPlayed');
+    const gameStateLS = localStorage.getItem('gameState');
+    if (!gameStateLS || !lastPlayedLS) return GameUtils.initialBoardState;
+    const today = new Date();
+    const lastPlayed = new Date(parseInt(lastPlayedLS));
+    if (
+      today.getDate() === lastPlayed.getDate() &&
+      today.getMonth() === lastPlayed.getMonth() &&
+      today.getFullYear() === lastPlayed.getFullYear()
+    ) {
+      return JSON.parse(gameStateLS);
+    }
+    return GameUtils.initialBoardState;
+  });
   const [invalidTryCount, setInvalidTryCount] = useState(0);
-  const pressEnabled = useRef(false);
-  const [statistics, setStatistics] = useState(GameUtils.initialStats);
+  const pressEnabled = useRef(true);
+  const [statistics, setStatistics] = useState<Statistics>(() => {
+    const statisticsLS = localStorage.getItem('statistics');
+    if (statisticsLS) {
+      return JSON.parse(statisticsLS);
+    }
+    return GameUtils.initialStats;
+  });
   const isGameOver = useMemo(() => GameUtils.hasFinished(gameState), [gameState]);
 
   const onKeyPress = useCallback(
@@ -50,6 +70,10 @@ export const App = () => {
         setTimeout(() => toast(GameUtils.todaysSolution), 2000);
       }
       setStatistics((stats) => GameUtils.updateStats(stats, newState));
+
+      localStorage.setItem('gameState', JSON.stringify(newState));
+      localStorage.setItem('statistics', JSON.stringify(statistics));
+      localStorage.setItem('lastPlayed', Date.now().toString());
     },
     [gameState],
   );
