@@ -9,7 +9,7 @@ export const Keyboard = ({
   gameState: GameState;
 }) => {
   return (
-    <div className={'pb-5 mt-8 -mx-3 -mb-3'}>
+    <div className={'pb-5 -mx-3 -mb-3'}>
       <div className={'flex'}>
         {GameUtils.keyList['0'].map((key) => {
           return (

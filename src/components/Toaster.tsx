@@ -12,12 +12,11 @@ export const Toaster = memo(({isGameOver}: {isGameOver: boolean}) => {
         autoClose={3000}
         hideProgressBar
         closeButton={false}
-        style={{maxWidth: '200px'}}
-        toastStyle={{
-          color: 'white',
-          backgroundColor: 'rgb(75,85,99)',
-          textAlign: 'center',
+        style={{
+          bottom: '1em',
         }}
+        className={'toaster-container'}
+        toastClassName={'toaster-toast'}
       />
       <ToastContainer
         enableMultiContainer
@@ -26,12 +25,11 @@ export const Toaster = memo(({isGameOver}: {isGameOver: boolean}) => {
         autoClose={isGameOver ? false : 3000}
         hideProgressBar
         closeButton={false}
-        style={{maxWidth: '200px'}}
-        toastStyle={{
-          color: 'white',
-          backgroundColor: 'rgb(75,85,99)',
-          textAlign: 'center',
+        style={{
+          top: '1em',
         }}
+        toastClassName={'toaster-toast'}
+        className={'toaster-container'}
       />
     </>
   );

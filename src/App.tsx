@@ -27,7 +27,6 @@ export const App = () => {
   const [statistics, setStatistics] = useState<Statistics>(() => {
     const statisticsLS = localStorage.getItem('statistics');
     if (statisticsLS) {
-      console.log(statisticsLS);
       return JSON.parse(statisticsLS);
     }
     return GameUtils.initialStats;

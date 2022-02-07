@@ -30,9 +30,7 @@ export const Header = memo(
 
     return (
       <>
-        <header
-          className={'w-full border-b p-5 flex justify-between items-center border-gray-300 mb-8'}
-        >
+        <header className={'w-full border-b p-5 flex justify-between items-center border-gray-300'}>
           <button
             onClick={() => {
               setShowTutorial(true);

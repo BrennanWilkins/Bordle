@@ -2,7 +2,7 @@ import {SOLUTIONS, VALID_GUESSES} from './wordList';
 
 export class GameUtils {
   static get initialBoardState(): GameState {
-    return Array(5)
+    return Array(6)
       .fill(null)
       .map(() =>
         Array(5).fill({

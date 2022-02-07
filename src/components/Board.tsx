@@ -24,9 +24,12 @@ export const Board = ({
   const currentRow = GameUtils.getCurrentRowIdx(gameState);
 
   return (
-    <div className={'w-full flex flex-col justify-center flex-grow h-0'} ref={containerRef}>
+    <div
+      className={'w-full flex flex-col justify-center flex-grow h-0 board-container'}
+      ref={containerRef}
+    >
       <div className={'w-full mx-auto max-w-sm flex justify-center'} ref={boardRef}>
-        <div className={'grid grid-cols-5 gap-1.5 w-full grid-rows-5'}>
+        <div className={'grid grid-cols-5 gap-1.5 w-full grid-rows-6'}>
           {gameState.flat().map((tile, idx) => (
             <Tile
               key={idx}
