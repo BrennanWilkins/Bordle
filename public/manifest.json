@@ -1,6 +1,6 @@
 {
-  "short_name": "Wordle Clone",
-  "name": "Wordle Clone",
+  "short_name": "Bordle",
+  "name": "Bordle",
   "icons": [],
   "start_url": ".",
   "display": "standalone",

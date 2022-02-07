@@ -30,6 +30,11 @@ code {
     monospace;
 }
 
+.full-height {
+    height: 100vh;
+    max-height: -webkit-fill-available;
+}
+
 .board-tile:before {
     content: ' ';
     display: block;

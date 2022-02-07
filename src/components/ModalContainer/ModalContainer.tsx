@@ -30,7 +30,9 @@ export const ModalContainer = ({
       </CSSTransition>
       <CSSTransition in={isShown} timeout={300} classNames="modal" unmountOnExit>
         <div
-          className={'fixed inset-0 z-50 overflow-hidden flex items-start p-5 pt-20 justify-center'}
+          className={
+            'fixed inset-0 z-50 w-full h-full overflow-hidden flex items-start p-5 pt-20 justify-center'
+          }
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               close();
@@ -39,7 +41,7 @@ export const ModalContainer = ({
         >
           <div
             className={
-              'modal-container rounded-lg shadow-2xl bg-white max-w-xl overflow-y-auto w-full relative z-10 p-5 pt-10'
+              'modal-container rounded-lg shadow-2xl bg-white max-w-xl overflow-y-auto w-full max-h-full relative z-10 p-5 pt-10'
             }
           >
             <button

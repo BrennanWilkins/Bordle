@@ -1,7 +1,11 @@
 import {useEffect, useState} from 'react';
 
 export const CountDownText = () => {
-  const [countText, setCountText] = useState('');
+  const [countText, setCountText] = useState({
+    hr: '00',
+    min: '00',
+    sec: '00',
+  });
 
   useEffect(() => {
     const tomorrow = new Date();
@@ -19,9 +23,11 @@ export const CountDownText = () => {
       const min = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const sec = Math.floor((distance % (1000 * 60)) / 1000);
 
-      setCountText(
-        `${hr < 10 ? '0' : ''}${hr}:${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`,
-      );
+      setCountText({
+        hr: `${hr < 10 ? '0' : ''}${hr}`,
+        min: `${min < 10 ? '0' : ''}${min}`,
+        sec: `${sec < 10 ? '0' : ''}${sec}`,
+      });
 
       return distance;
     };
@@ -40,5 +46,9 @@ export const CountDownText = () => {
     };
   }, []);
 
-  return <div className={'text-3xl text-center'}>{countText}</div>;
+  return (
+    <div className={'flex items-center text-center text-4xl'}>
+      <div>{countText.hr}</div>:<div>{countText.min}</div>:<div>{countText.sec}</div>
+    </div>
+  );
 };

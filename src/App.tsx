@@ -27,6 +27,7 @@ export const App = () => {
   const [statistics, setStatistics] = useState<Statistics>(() => {
     const statisticsLS = localStorage.getItem('statistics');
     if (statisticsLS) {
+      console.log(statisticsLS);
       return JSON.parse(statisticsLS);
     }
     return GameUtils.initialStats;
@@ -69,13 +70,14 @@ export const App = () => {
       if (GameUtils.hasFailed(newState)) {
         setTimeout(() => toasty(GameUtils.todaysSolution, 'gameState'), 2000);
       }
-      setStatistics((stats) => GameUtils.updateStats(stats, newState));
+      const newStats = GameUtils.updateStats(statistics, newState);
+      setStatistics(newStats);
 
       localStorage.setItem('gameState', JSON.stringify(newState));
-      localStorage.setItem('statistics', JSON.stringify(statistics));
+      localStorage.setItem('statistics', JSON.stringify(newStats));
       localStorage.setItem('lastPlayed', Date.now().toString());
     },
-    [gameState],
+    [gameState, statistics],
   );
 
   useEffect(() => {
@@ -113,7 +115,7 @@ export const App = () => {
   }, [isGameOver]);
 
   return (
-    <div className={'max-w-2xl px-5 mx-auto flex flex-col min-h-screen'}>
+    <div className={'max-w-2xl px-5 mx-auto flex flex-col full-height'}>
       <Header
         onTogglePressEnabled={onTogglePressEnabled}
         statistics={statistics}

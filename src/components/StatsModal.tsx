@@ -39,9 +39,9 @@ export const StatsModal = ({
       <div className={'max-w-md mx-auto px-2 my-2'}>
         {Object.entries(statistics.guesses).map((guess) => (
           <div className={'flex items-center my-2'} key={guess[0]}>
-            <div className={'mr-1'}>{guess[0]}</div>
+            <div style={{minWidth: '15px'}}>{guess[0]}</div>
             <div
-              style={{width: `calc(${(guess[1] * 100) / highestGuess}% - 10px)`, minWidth: '25px'}}
+              style={{width: `calc(${(guess[1] * 100) / highestGuess}%)`, minWidth: '25px'}}
               className={`flex justify-end text-white font-semibold text-base px-2 ${
                 guess[1] === 0 ? 'bg-gray-500' : 'bg-green-600'
               }`}
@@ -53,7 +53,7 @@ export const StatsModal = ({
       </div>
       {isGameOver && (
         <div className={'flex justify-center mt-5'}>
-          <div>
+          <div className={'whitespace-nowrap'}>
             <h3>NEXT BORDLE</h3>
             <CountDownText />
           </div>

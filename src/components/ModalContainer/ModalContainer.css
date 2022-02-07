@@ -33,10 +33,6 @@
     transition: opacity 300ms;
 }
 
-.modal-container {
-    max-height: calc(100vh - 6rem);
-}
-
 .modal-container::-webkit-scrollbar {
     width: 10px;
     height: 10px;
