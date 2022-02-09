@@ -14,6 +14,9 @@ export const TutorialModal = ({show, close}: {show: boolean; close: () => void})
         After each guess, the color of the tiles will change to show how close your guess was to the
         word.
       </div>
+      <div className={'mt-2'}>
+        <b>Hard Mode:</b> if activated, you will have 5 tries to guess the Bordle.
+      </div>
       <div className={'border-t border-gray-200 pt-2 mt-5'}>Examples:</div>
       <div className={'grid grid-cols-5 gap-1.5 mt-5 mb-1 max-w-[250px]'}>
         {'WEARY'.split('').map((char, idx) => (

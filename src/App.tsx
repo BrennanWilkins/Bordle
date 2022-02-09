@@ -10,7 +10,9 @@ export const App = () => {
   const [gameState, setGameState] = useState<GameState>(() => {
     const lastPlayedLS = localStorage.getItem('lastPlayed');
     const gameStateLS = localStorage.getItem('gameState');
-    if (!gameStateLS || !lastPlayedLS) return GameUtils.initialBoardState;
+    if (!gameStateLS || !lastPlayedLS) {
+      return GameUtils.getInitialBoardState(!!localStorage.getItem('hardModeEnabled'));
+    }
     const today = new Date();
     const lastPlayed = new Date(parseInt(lastPlayedLS));
     if (
@@ -20,7 +22,7 @@ export const App = () => {
     ) {
       return JSON.parse(gameStateLS);
     }
-    return GameUtils.initialBoardState;
+    return GameUtils.getInitialBoardState(!!localStorage.getItem('hardModeEnabled'));
   });
   const [invalidTryCount, setInvalidTryCount] = useState(0);
   const pressEnabled = useRef(true);
@@ -31,7 +33,15 @@ export const App = () => {
     }
     return GameUtils.initialStats;
   });
-  const isGameOver = useMemo(() => GameUtils.hasFinished(gameState), [gameState]);
+  const {isGameOver, isGameActive} = useMemo(() => {
+    return {
+      isGameOver: GameUtils.hasFinished(gameState),
+      isGameActive: GameUtils.gameIsActive(gameState),
+    };
+  }, [gameState]);
+  const [hardMode, setHardMode] = useState(() => {
+    return !!localStorage.getItem('hardModeEnabled');
+  });
 
   const onKeyPress = useCallback(
     (key: string) => {
@@ -113,6 +123,18 @@ export const App = () => {
     }
   }, [isGameOver]);
 
+  const onToggleHardMode = useCallback(() => {
+    if (isGameActive) {
+      toasty('hard mode cannot be changed while game active', 'notification');
+      return;
+    }
+    setGameState(GameUtils.getInitialBoardState(!hardMode));
+    hardMode
+      ? localStorage.removeItem('hardModeEnabled')
+      : localStorage.setItem('hardModeEnabled', 'true');
+    setHardMode(!hardMode);
+  }, [hardMode, isGameActive]);
+
   return (
     <div className={'max-w-2xl px-5 mx-auto flex flex-col full-height'}>
       <Header
@@ -120,6 +142,8 @@ export const App = () => {
         statistics={statistics}
         isGameOver={GameUtils.hasFinished(gameState)}
         onShare={onShare}
+        isHardMode={hardMode}
+        onToggleHardMode={onToggleHardMode}
       />
       <Board gameState={gameState} invalidTryCount={invalidTryCount} />
       <Keyboard onKeyPress={onKeyPress} gameState={gameState} />

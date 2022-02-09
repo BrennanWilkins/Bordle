@@ -29,7 +29,7 @@ export const Board = ({
       ref={containerRef}
     >
       <div className={'w-full mx-auto max-w-sm flex justify-center'} ref={boardRef}>
-        <div className={'grid grid-cols-5 gap-1.5 w-full grid-rows-6'}>
+        <div className={`grid grid-cols-5 gap-1.5 w-full grid-rows-${gameState.length}`}>
           {gameState.flat().map((tile, idx) => (
             <Tile
               key={idx}

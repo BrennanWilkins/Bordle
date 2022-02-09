@@ -1,8 +1,8 @@
 import {SOLUTIONS, VALID_GUESSES} from './wordList';
 
 export class GameUtils {
-  static get initialBoardState(): GameState {
-    return Array(6)
+  static getInitialBoardState(hardMode: boolean): GameState {
+    return Array(hardMode ? 5 : 6)
       .fill(null)
       .map(() =>
         Array(5).fill({
@@ -154,6 +154,10 @@ export class GameUtils {
     return `Bordle ${this.solutionIdx} ${
       this.hasFailed(gameState) ? 'X' : this.winIndex(gameState) + 1
     }/6\n\n${emojiBoard}`;
+  }
+
+  static gameIsActive(gameState: GameState) {
+    return gameState.some((row) => row.some((x) => x.status !== 'blank'));
   }
 }
 
