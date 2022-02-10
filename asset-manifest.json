@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.e634ffe2.css",
-    "main.js": "/static/js/main.5b1c4355.js",
-    "index.html": "/index.html",
-    "main.e634ffe2.css.map": "/static/css/main.e634ffe2.css.map",
-    "main.5b1c4355.js.map": "/static/js/main.5b1c4355.js.map"
+    "main.css": "/Bordle/static/css/main.e634ffe2.css",
+    "main.js": "/Bordle/static/js/main.5b1c4355.js",
+    "index.html": "/Bordle/index.html",
+    "main.e634ffe2.css.map": "/Bordle/static/css/main.e634ffe2.css.map",
+    "main.5b1c4355.js.map": "/Bordle/static/js/main.5b1c4355.js.map"
   },
   "entrypoints": [
     "static/css/main.e634ffe2.css",
