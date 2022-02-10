@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Bordle/static/css/main.e634ffe2.css",
-    "main.js": "/Bordle/static/js/main.5b1c4355.js",
+    "main.js": "/Bordle/static/js/main.2e5a8ed5.js",
     "index.html": "/Bordle/index.html",
     "main.e634ffe2.css.map": "/Bordle/static/css/main.e634ffe2.css.map",
-    "main.5b1c4355.js.map": "/Bordle/static/js/main.5b1c4355.js.map"
+    "main.2e5a8ed5.js.map": "/Bordle/static/js/main.2e5a8ed5.js.map"
   },
   "entrypoints": [
     "static/css/main.e634ffe2.css",
-    "static/js/main.5b1c4355.js"
+    "static/js/main.2e5a8ed5.js"
   ]
 }
