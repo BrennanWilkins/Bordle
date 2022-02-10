@@ -172,6 +172,16 @@ export class GameUtils {
   static gameIsActive(gameState: GameState) {
     return gameState.some((row) => row.some((x) => x.status !== 'blank'));
   }
+
+  static getMidnight() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0);
+    tomorrow.setMinutes(0);
+    tomorrow.setSeconds(0);
+    tomorrow.setMilliseconds(0);
+    return tomorrow.getTime();
+  }
 }
 
 export type TileStatus = 'correct' | 'absent' | 'present' | 'blank' | 'attempt' | 'done';

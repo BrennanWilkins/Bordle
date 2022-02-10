@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import {GameUtils} from '../utils/gameUtils';
 
 export const CountDownText = () => {
   const [countText, setCountText] = useState({
@@ -8,13 +9,7 @@ export const CountDownText = () => {
   });
 
   useEffect(() => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0);
-    tomorrow.setMinutes(0);
-    tomorrow.setSeconds(0);
-    tomorrow.setMilliseconds(0);
-    const midnight = tomorrow.getTime();
+    const midnight = GameUtils.getMidnight();
 
     const onTick = () => {
       const distance = midnight - Date.now();
@@ -36,7 +31,6 @@ export const CountDownText = () => {
       const distance = onTick();
       if (distance < 0) {
         clearInterval(timer);
-        window.location.reload();
       }
     }, 1000);
 

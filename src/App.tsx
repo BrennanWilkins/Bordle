@@ -22,6 +22,7 @@ export const App = () => {
     ) {
       return JSON.parse(gameStateLS);
     }
+    localStorage.removeItem('gameState');
     return GameUtils.getInitialBoardState(!!localStorage.getItem('hardModeEnabled'));
   });
   const [invalidTryCount, setInvalidTryCount] = useState(0);
@@ -42,6 +43,12 @@ export const App = () => {
   const [hardMode, setHardMode] = useState(() => {
     return !!localStorage.getItem('hardModeEnabled');
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.location.reload();
+    }, GameUtils.getMidnight() - Date.now());
+  }, []);
 
   const onKeyPress = useCallback(
     (key: string) => {
