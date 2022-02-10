@@ -1,5 +1,5 @@
 import {ReactNode, useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {TileStatus} from '../logic/gameUtils';
+import {TileStatus} from '../utils/gameUtils';
 
 export const Tile = ({
   children,

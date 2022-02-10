@@ -1,7 +1,7 @@
 import {TutorialModal} from './TutorialModal';
 import {memo, useState} from 'react';
 import {StatsModal} from './StatsModal';
-import {Statistics} from '../logic/gameUtils';
+import {Statistics} from '../utils/gameUtils';
 import {useDidUpdate} from '../hooks/useDidUpdate';
 import {SettingsModal} from './SettingsModal';
 

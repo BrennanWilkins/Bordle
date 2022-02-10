@@ -47,7 +47,7 @@ export const CountDownText = () => {
   }, []);
 
   return (
-    <div className={'flex items-center text-center text-4xl'}>
+    <div className={'flex justify-center items-center text-center text-4xl w-40'}>
       <div>{countText.hr}</div>:<div>{countText.min}</div>:<div>{countText.sec}</div>
     </div>
   );

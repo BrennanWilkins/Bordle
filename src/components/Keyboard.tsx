@@ -1,5 +1,5 @@
 import {ReactNode, useEffect, useRef, useState} from 'react';
-import {GameState, GameUtils, TileStatus} from '../logic/gameUtils';
+import {GameState, GameUtils, TileStatus} from '../utils/gameUtils';
 
 export const Keyboard = ({
   onKeyPress,

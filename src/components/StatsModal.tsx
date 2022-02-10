@@ -1,5 +1,5 @@
 import {ModalContainer} from './ModalContainer/ModalContainer';
-import {GameUtils, Statistics} from '../logic/gameUtils';
+import {GameUtils, Statistics} from '../utils/gameUtils';
 import {CountDownText} from './CountDownText';
 
 export const StatsModal = ({
@@ -57,7 +57,7 @@ export const StatsModal = ({
             <h3>NEXT BORDLE</h3>
             <CountDownText />
           </div>
-          <div className={'border-r mx-8 border-gray-500'} />
+          <div className={'border-r mx-4 sm:mx-8 border-gray-500'} />
           <button
             onClick={onShare}
             className={

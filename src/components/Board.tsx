@@ -1,6 +1,6 @@
 import {useRef} from 'react';
 import {Tile} from './Tile';
-import {GameState, GameUtils} from '../logic/gameUtils';
+import {GameState, GameUtils} from '../utils/gameUtils';
 import {useResize} from '../hooks/useResize';
 
 export const Board = ({

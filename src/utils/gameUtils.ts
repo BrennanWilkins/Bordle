@@ -41,6 +41,19 @@ export class GameUtils {
     return VALID_GUESSES.includes(word) || SOLUTIONS.includes(word);
   }
 
+  static getMissingHints(gameState: GameState, currentRowIdx: number) {
+    if (currentRowIdx === 0) return [];
+    const missing = [];
+    for (const value of gameState[currentRowIdx - 1]
+      .filter((x) => x.status === 'present')
+      .map((x) => x.value)) {
+      if (!gameState[currentRowIdx].find((x) => x.value === value)) {
+        missing.push(value);
+      }
+    }
+    return missing;
+  }
+
   static updateRowStatus(row: GameState[0]): GameState[0] {
     const answer = this.todaysSolution;
     const word = row.map((x) => x.value).join('');

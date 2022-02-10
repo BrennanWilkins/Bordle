@@ -2,9 +2,9 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Header} from './components/Header';
 import {Keyboard} from './components/Keyboard';
 import {Board} from './components/Board';
-import {GameState, GameUtils, Statistics} from './logic/gameUtils';
+import {GameState, GameUtils, Statistics} from './utils/gameUtils';
 import {Toaster, toasty} from './components/Toaster';
-import {isMobileBrowser} from './logic/isMobileBrowser';
+import {isMobileBrowser} from './utils/isMobileBrowser';
 
 export const App = () => {
   const [gameState, setGameState] = useState<GameState>(() => {
@@ -56,15 +56,21 @@ export const App = () => {
         const idx = lastEnteredIdx > -1 ? lastEnteredIdx - 1 : 4;
         row[idx] = {status: 'blank', value: ''};
       } else if (key === 'enter') {
-        if (remainingLength === 0) {
-          const isValid = GameUtils.guessIsValid(row);
-          if (!isValid) {
+        if (remainingLength !== 0) return;
+        if (hardMode) {
+          const missingHints = GameUtils.getMissingHints(newState, currentRowIdx);
+          if (missingHints.length) {
             setInvalidTryCount((x) => x + 1);
-            toasty('not in word list', 'gameState');
+            toasty(`word must contain ${missingHints.join(' ').toUpperCase()}`, 'gameState');
             return;
           }
-          row = GameUtils.updateRowStatus(row);
         }
+        if (!GameUtils.guessIsValid(row)) {
+          setInvalidTryCount((x) => x + 1);
+          toasty('not in word list', 'gameState');
+          return;
+        }
+        row = GameUtils.updateRowStatus(row);
       } else if (remainingLength > 0) {
         row[lastEnteredIdx] = {status: 'attempt', value: key};
       }
@@ -86,7 +92,7 @@ export const App = () => {
       localStorage.setItem('statistics', JSON.stringify(newStats));
       localStorage.setItem('lastPlayed', Date.now().toString());
     },
-    [gameState, statistics],
+    [gameState, statistics, hardMode],
   );
 
   useEffect(() => {
